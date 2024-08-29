@@ -14,15 +14,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CustomMetricSource {
 
     private final MeterRegistry registry;
-    HashMap<String, String> marksData = new HashMap<>(Map.of(
+
+    private final HashMap<String, String> ageMap = new HashMap<>(Map.of(
             "John", "78",
             "Jane", "65",
             "Greg", "89",
             "Tom", "91"
     ));
     private Gauge gauge;
-    private final AtomicInteger gaugeInteger = new AtomicInteger(marksData.size());
-    private static final String STUDENTS_MARKS_DATA = "students.marks.data";
+    private final AtomicInteger gaugeInteger = new AtomicInteger(ageMap.size());
+    private static final String GAUGE_NAME = "students.marks.data";
 
     public CustomMetricSource(MeterRegistry registry) {
         this.registry = registry;
@@ -30,22 +31,22 @@ public class CustomMetricSource {
     }
 
     private void createGauge() {
-        this.gauge = Gauge.builder(STUDENTS_MARKS_DATA, gaugeInteger::get)
+        this.gauge = Gauge.builder(GAUGE_NAME, gaugeInteger::get)
                 .description("This metrics show the marks obtained by students")
                 .tags(getTags())
                 .register(registry);
     }
 
     private List<Tag> getTags() {
-        return marksData.keySet()
+        return ageMap.keySet()
                 .stream()
-                .map(key -> Tag.of(key, marksData.get(key)))
+                .map(key -> Tag.of(key, ageMap.get(key)))
                 .toList();
     }
 
     public void addDataToMarksMap(String name, String marks) {
-        marksData.put(name, marks);
-        this.gaugeInteger.set(marksData.size());
+        ageMap.put(name, marks);
+        this.gaugeInteger.set(ageMap.size());
     }
 
 }
