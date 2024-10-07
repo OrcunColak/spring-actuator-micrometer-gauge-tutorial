@@ -13,8 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class CustomMetricSource {
 
-    private final MeterRegistry registry;
-
     private final HashMap<String, String> ageMap = new HashMap<>(Map.of(
             "John", "78",
             "Jane", "65",
@@ -26,12 +24,11 @@ public class CustomMetricSource {
     private static final String GAUGE_NAME = "students.marks.data";
 
     public CustomMetricSource(MeterRegistry registry) {
-        this.registry = registry;
-        createGauge();
+        this.gauge = createGauge(registry);
     }
 
-    private void createGauge() {
-        this.gauge = Gauge.builder(GAUGE_NAME, gaugeInteger::get)
+    private Gauge createGauge(MeterRegistry registry) {
+        return Gauge.builder(GAUGE_NAME, gaugeInteger::get)
                 .description("This metrics show the marks obtained by students")
                 .tags(getTags())
                 .register(registry);
