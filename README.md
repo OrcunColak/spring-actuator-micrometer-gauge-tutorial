@@ -6,6 +6,7 @@ http://localhost:8080/actuator/prometheus
 
 http://localhost:8080/actuator/metrics
 http://localhost:8080/actuator/metrics/gauge_read_get
+http://localhost:8080/actuator/metrics/custom.gauge
 
 # GaugeController
 

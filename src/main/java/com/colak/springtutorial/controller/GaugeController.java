@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// This example shows how to create a gauge within a controller
 @RestController
 @RequestMapping(path = "/gauge")
 
